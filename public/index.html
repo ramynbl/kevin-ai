@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kevin.ai</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Config Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        ios: { bg: '#000000', surface: '#1C1C1E', bubble: '#2C2C2E' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        .glass { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.124); }
+        
+        /* Curseur Machine à écrire */
+        .typing-cursor::after { content: '▋'; color: white; animation: blink 1s infinite; margin-left: 2px; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-black text-white h-screen overflow-hidden selection:bg-white selection:text-black">
+    <!-- Header -->
+    <nav id="header" class="fixed top-0 left-0 w-full h-16 flex items-center justify-between px-8 md:px-24 bg-transparent backdrop-blur z-30">
+        <span class="text-xl font-bold tracking-tighter">Kevin<span class="text-gray-500">.</span>ai</span>
+        <div class="space-x-4">
+            <a href="start-btn" class="text-sm text-gray-400 font-bold hover:text-white transition">Commencer</a>
+            <a href="#" class="text-sm text-gray-400 font-bold hover:text-white transition">À propos</a>
+            <a href="#" class="text-sm text-gray-400 font-bold hover:text-white transition">Contact</a>
+        </div>
+    </nav>
+
+    <!-- LANDING PAGE -->
+    <section id="landing-view" class="relative w-full h-full flex flex-col justify-center items-start">
+        
+        <!-- Vidéo -->
+        <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-80">
+            <source src="/images/background.mp4" type="video/mp4">
+            <div class="bg-gray-900 w-full h-full"></div>
+        </video>
+
+        <div class="absolute inset-0 bg-black/20 z-10"></div>
+        <div class="absolute inset-y-0 left-0 w-full md:w-3/4 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
+
+        <div class="relative z-20 px-8 md:px-24 max-w-xl animate-fade-in-up text-left">
+
+            <h1 class="text-6xl md:text-8xl font-bold mb-6 tracking-tighter leading-none text-white">
+                Kevin<span class="text-gray-500">.</span>ai
+            </h1>
+            
+            <p class="text-lg text-gray-300 mb-8 font-light leading-relaxed border-l border-white/30 pl-4">
+                L'assistant personnel qui vous déteste déjà.<br>
+                Préparez-vous à être jugé.
+            </p>
+
+            <button id="start-btn" class="group px-6 py-2 bg-white text-black rounded-full text-sm font-medium transition hover:bg-gray-200 active:scale-95 flex items-center gap-2 shadow-lg shadow-white/5">
+                Commencer
+                <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
+    </section>
+
+
+    <!-- CHAT -->
+    <section id="chat-view" class="hidden w-full h-full flex">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-72 bg-[#0c0c0c] border-r border-white/5 flex flex-col hidden md:flex">
+            <div class="p-4 pt-6">
+                <button onclick="resetChat()" class="flex items-center gap-3 w-full px-4 py-2 text-xs text-gray-400 bg-white/5 hover:bg-white/10 hover:text-white rounded-lg border border-white/5 transition duration-200">
+                    <i class="ph ph-plus"></i>
+                    Nouvelle session
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto px-3 space-y-1">
+                <div class="px-3 py-2 text-[10px] font-bold text-gray-600 uppercase tracking-widest">Archives</div>
+                <!-- Fausses conversations -->
+                <div class="space-y-0.5">
+                    <button class="w-full text-left px-3 py-2 text-sm text-gray-500 hover:text-white hover:bg-white/5 rounded transition truncate">
+                        Analyse psychologique #01
+                    </button>
+                    <button class="w-full text-left px-3 py-2 text-sm text-gray-500 hover:text-white hover:bg-white/5 rounded transition truncate">
+                        Erreurs humaines fréquentes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer User -->
+            <div class="p-4 border-t border-white/5">
+                <div class="flex items-center gap-3 px-2 py-2 hover:bg-white/5 rounded-lg cursor-pointer transition opacity-60 hover:opacity-100">
+                    <div class="w-8 h-8 rounded-full bg-white/10 border border-white/5 flex items-center justify-center">
+                        <i class="ph-fill ph-user text-gray-400"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xs font-medium text-white">Invité</span>
+                        <span class="text-[10px] text-gray-500">Non authentifié</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CHAT AREA -->
+        <main class="flex-1 flex flex-col relative bg-[#151515]">
+            
+            <!-- HEADER MOBILE -->
+            <header class="md:hidden h-14 border-b border-white/5 flex items-center justify-between px-4 bg-black/80 backdrop-blur">
+                <span class="font-semibold text-white">Kevin.ai</span>
+                <button onclick="resetChat()" class="text-xs text-gray-400">Reset</button>
+            </header>
+
+            <!-- TOP BAR -->
+            <div id="top-bar" class="absolute top-0 left-0 right-0 h-16 flex items-center justify-center z-10">
+                <div class="bg-black/50 backdrop-blur-md border border-white/5 px-3 py-1 rounded-full flex items-center gap-2 shadow-lg mt-2">
+                    <span class="text-[10px] font-medium text-gray-400">v2.0</span>
+                    <span class="text-gray-600">|</span>
+                    <button onclick="resetChat()" class="text-[10px] font-medium text-gray-400 hover:text-white transition">Reset</button>
+                </div>
+            </div>
+
+            <!-- ZONE DE MESSAGES -->
+            <div id="chat-history" class="flex-1 overflow-y-auto p-4 md:p-10 space-y-8 pt-20"></div>
+
+            <!-- ZONE DE SAISIE -->
+            <div class="p-4 md:p-6 pb-8">
+                <div class="max-w-3xl mx-auto glass rounded-[1.5rem] p-1.5 pl-4 flex items-end gap-2 relative shadow-2xl shadow-black">
+                    
+                    <button class="w-8 h-8 rounded-full text-gray-500 hover:text-white hover:bg-white/10 flex items-center justify-center transition flex-shrink-0 mb-1">
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+
+                    <textarea 
+                        id="user-input" 
+                        rows="1"
+                        class="flex-1 bg-transparent text-white placeholder-gray-500 text-[14px] py-2.5 resize-none focus:outline-none max-h-32"
+                        placeholder="Écrivez à Kevin..."
+                        oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
+                    ></textarea>
+
+                    <button id="audio-btn" class="w-8 h-8 rounded-full text-gray-500 hover:text-white hover:bg-white/10 flex items-center justify-center transition flex-shrink-0 mb-1">
+                        <i id="audio-icon" class="ph-fill ph-speaker-slash"></i>
+                    </button>
+
+                    <button id="send-btn" class="w-8 h-8 rounded-full bg-white text-black hover:bg-gray-300 flex items-center justify-center transition flex-shrink-0 mb-1">
+                        <i class="ph-bold ph-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
