@@ -124,12 +124,13 @@ function typeWriterMarkdown(element, markdown, index = 0) {
     const fullText = tempDiv.textContent || tempDiv.innerText;
     
     if (index < fullText.length) {
+        // Afficher le HTML partiel sans curseur
         element.innerHTML = buildPartialHTML(htmlContent, index + 1);
         chatHistory.scrollTop = chatHistory.scrollHeight;
         setTimeout(() => typeWriterMarkdown(element, markdown, index + 1), 20);
     } else {
+        // Terminé : afficher le HTML complet
         element.innerHTML = htmlContent;
-        element.classList.remove('typing-cursor');
     }
 }
 
@@ -218,7 +219,7 @@ async function botReply(userMessage) {
                 <div class="flex items-center gap-2 text-gray-400 text-[10px] mb-1 font-bold uppercase tracking-wide">
                     Kevin
                 </div>
-                <div id="${msgId}" class="typing-cursor text-gray-200 leading-relaxed text-sm md:text-base font-light"></div>
+                <div id="${msgId}" class="text-gray-200 leading-relaxed text-sm md:text-base font-light"></div>
             </div>
         </div>`;
 
