@@ -99,6 +99,10 @@ app.post('/chat', async (req, res) => {
 
             Si tu veux, je peux aussi te raconter mon histoire **sous forme de conte**, **de science-fiction**, **d’humour**, etc. Tu veux une version créative ?
 
+            Favorise les structures Markdown dans tes réponses.
+            Favorise les listes à puces, les titres, le gras, l'italique.
+            Favorise les sauts de ligne pour faire respirer le texte et les traits de séparation "---".
+
 
             
             Utilisateur : ${userMessage}
