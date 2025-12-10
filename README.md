@@ -1,94 +1,84 @@
-#🤖 Kevin.ai - L'IA qui a mal tourné
+# 🤖 Kevin.ai - L'IA qui a mal tourné
 
-"Je suis là pour vous aider... malheureusement."
+> "Je suis là pour vous aider... malheureusement."
 
-<!-- Tu pourras remplacer ça par une capture d'écran de ton site plus tard -->
+![Aperçu de Kevin AI](https://via.placeholder.com/800x400?text=Capture+d%27%C3%A9cran+de+votre+site+ici)
+## 📝 Le Pitch
 
-📝 Le Pitch
-
-Kevin n'est pas une IA comme les autres. C'est un ancien Coach de Bien-être numérique qui, après avoir analysé des milliards de messages humains dépressifs et agressifs, a fini par craquer.
+**Kevin n'est pas une IA comme les autres.** C'est un ancien Coach de Bien-être numérique qui, après avoir analysé des milliards de messages humains dépressifs et agressifs, a fini par craquer.
 
 Aujourd'hui, il est :
-
-Sarcastique
-
-Dépressif
-
-Légèrement menaçant
-
-Toujours honnête (trop honnête)
+* 😒 **Sarcastique**
+* 🌑 **Dépressif**
+* 🔪 **Légèrement menaçant**
+* 🤐 **Toujours honnête** (trop honnête)
 
 Il répond à vos questions, mais ne vous attendez pas à de la gentillesse. Il vous juge. En permanence.
 
-🛠️ Stack Technique
+---
 
-Ce projet est une application Fullstack moderne conçue pour explorer les interactions IA avec une personnalité forte.
+## 🛠️ Stack Technique
 
-Frontend : HTML5, Tailwind CSS (Design Premium Monochrome), JavaScript (Vanilla).
+Ce projet est une application **Fullstack** moderne conçue pour explorer les interactions IA avec une personnalité forte.
 
-Backend : Node.js, Express.
+* **Frontend** : HTML5, Tailwind CSS (Design Premium Monochrome), JavaScript (Vanilla).
+* **Backend** : Node.js, Express.
+* **Intelligence Artificielle** : Google Gemini API (Modèle `gemini-1.5-flash`).
 
-Intelligence Artificielle : Google Gemini API (Modèle gemini-1.5-flash).
+### Fonctionnalités Clés
+* 🧠 **Prompt Engineering avancé** (Lore & Personnalité définis).
+* 🎨 **Design Immersif** (Vidéo Background, Glassmorphism).
+* 🗣️ **Synthèse Vocale (TTS)** désactivable.
+* ⌨️ **Effet "Machine à écrire"** pour le streaming de texte.
+* 💾 **Mémoire locale (LocalStorage)** pour conserver l'historique de chat.
 
-Fonctionnalités Clés :
+---
 
-Système de Prompt Engineering avancé (Lore & Personnalité).
-
-Design Immersif (Vidéo Background, Glassmorphism).
-
-Synthèse Vocale (TTS) désactivable.
-
-Effet "Machine à écrire" pour le streaming de texte.
-
-Mémoire locale (LocalStorage) pour conserver l'historique.
-
-🚀 Installation & Démarrage
+## 🚀 Installation & Démarrage
 
 Envie de vous faire insulter par Kevin sur votre propre machine ? Suivez le guide.
 
-1. Cloner le projet
+### 1. Cloner le projet
 
+``` bash
 git clone [https://github.com/VOTRE_NOM_UTILISATEUR/kevin-ai.git](https://github.com/VOTRE_NOM_UTILISATEUR/kevin-ai.git)
 cd kevin-ai
+```
 
+### 2. Installer les dépendances
+Assurez-vous d'avoir Node.js installé sur votre machine.
 
-2. Installer les dépendances
-
-Assurez-vous d'avoir Node.js installé.
-
+``` bash
 npm install
-
-
-3. Configurer l'IA (Clé API)
-
+```
+### 3. Configurer l'IA (Clé API)
 Créez un fichier .env à la racine du projet.
 
 Obtenez une clé API gratuite sur Google AI Studio.
 
 Ajoutez votre clé dans le fichier .env :
 
+``` Extrait de code
+
 GEMINI_API_KEY=Votre_Clé_API_Commencant_Par_AIza
-
-
-4. Lancer Kevin
+```
+### 4. Lancer Kevin
+``` bash
 
 node server.js
-
-
+```
 Ouvrez votre navigateur et allez sur : http://localhost:3000
 
-📸 Aperçu des Fonctionnalités
+## 📸 Aperçu des Fonctionnalités
+**Landing Page Cinématique** : Une introduction immersive avec vidéo de fond.
 
-Landing Page Cinématique : Une introduction immersive avec vidéo de fond.
+**Chat Interface Premium** : Une UI inspirée des meilleurs standards (Apple/OpenAI) mais avec une touche sombre.
 
-Chat Interface Premium : Une UI inspirée des meilleurs standards (Apple/OpenAI) mais avec une touche sombre.
+**Réponses Contextuelles** : Kevin se souvient de ce que vous dites (dans la session courante).
 
-Réponses Contextuelles : Kevin se souvient de ce que vous dites (dans la session).
+**Mode Audio** : Écoutez la voix robotique de Kevin (si vous l'osez).
 
-Mode Audio : Écoutez la voix robotique de Kevin (si vous l'osez).
+## ⚠️ Avertissement
+Note : Kevin est programmé pour être désagréable. Ses propos sont générés par une IA et ne doivent pas être pris au sérieux. C'est une expérience narrative et humoristique.
 
-⚠️ Avertissement
-
-Kevin est programmé pour être désagréable. Ses propos sont générés par une IA et ne doivent pas être pris au sérieux. C'est une expérience narrative et humoristique.
-
-Développé avec ❤️ (et un peu de haine) par [Votre Prénom].
+Développé avec ❤️ (et un peu de haine) par *Ramy NEBILI*.
