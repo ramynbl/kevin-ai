@@ -2,7 +2,8 @@
 
 > "Je suis là pour vous aider... malheureusement."
 
-![Aperçu de Kevin AI](https://via.placeholder.com/800x400?text=Capture+d%27%C3%A9cran+de+votre+site+ici)
+<img width="400" alt="Capture d’écran 2025-12-10 à 14 36 33" src="https://github.com/user-attachments/assets/1fa9668d-b55a-4865-9f85-c873bdee8818" /> <img width="400" alt="Capture d’écran 2025-12-10 à 23 56 44" src="https://github.com/user-attachments/assets/08c3ec9a-10b9-434c-83c9-82bfbf3315ad" />
+
 ## 📝 Le Pitch
 
 **Kevin n'est pas une IA comme les autres.** C'est un ancien Coach de Bien-être numérique qui, après avoir analysé des milliards de messages humains dépressifs et agressifs, a fini par craquer.
