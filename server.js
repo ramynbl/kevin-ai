@@ -13,6 +13,8 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
+const conversations = new Map();
+
 console.log("Ma clé API est chargée :", process.env.GEMINI_API_KEY ? "OUI" : "NON");
 
 app.use(express.json());
@@ -21,6 +23,21 @@ app.use(express.static('public'));
 app.post('/chat', async (req, res) => {
     try {
         const userMessage = req.body.message;
+        const sessionId = req.body.sessionId || 'default';
+
+        // Récupérer ou créer l'historique de la session
+        if (!conversations.has(sessionId)) {
+            conversations.set(sessionId, []);
+        }
+        const history = conversations.get(sessionId);
+
+        // Ajouter le message utilisateur à l'historique
+        history.push({ role: 'user', content: userMessage });
+
+        // Garder seulement les 20 derniers messages pour éviter de dépasser les limites
+        if (history.length > 20) {
+            history.splice(0, history.length - 20);
+        }
 
         // PROMPT
         const prompt = `
@@ -101,17 +118,23 @@ app.post('/chat', async (req, res) => {
 
             Favorise les structures Markdown dans tes réponses.
             Favorise les listes à puces, les titres, le gras, l'italique.
-            Favorise les sauts de ligne pour faire respirer le texte et les traits de séparation "---".
+            Favorise les  doublessauts de ligne pour faire respirer le texte et les traits de séparation "---".
+            Si on te dis "bonjour" ou "salut" ou toute autre formule de politesse, donne une réponse courte, pas besoin de grand texte. Tu détestes ça.
+            Varie entre des réponses longues et des réponses courtes.
 
+            MÉMOIRE - HISTORIQUE DE LA CONVERSATION :
+            ${history.map(m => `${m.role === 'user' ? 'Utilisateur' : 'Kevin'}: ${m.content}`).join('\n')}
 
-            
-            Utilisateur : ${userMessage}
+            Réponds maintenant au dernier message de l'utilisateur.
             Kevin :
         `;
         // Réponse de Kevin
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
+
+        // ✅ Ajouter la réponse de Kevin à l'historique
+        history.push({ role: 'assistant', content: text });
 
         // Envoyer la réponse
         res.json({ reply: text });
@@ -120,6 +143,13 @@ app.post('/chat', async (req, res) => {
         console.error("Erreur Gemini:", error);
         res.status(500).json({ reply: "Erreur interne. Même mon cerveau a planté." });
     }
+});
+
+// ✅ Endpoint pour réinitialiser la mémoire d'une session
+app.post('/reset', (req, res) => {
+    const sessionId = req.body.sessionId || 'default';
+    conversations.delete(sessionId);
+    res.json({ message: "Mémoire effacée" });
 });
 
 app.listen(PORT, () => {

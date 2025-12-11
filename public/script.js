@@ -64,6 +64,13 @@ const audioIcon = document.getElementById('audio-icon');
 // Mute par défaut
 let isMuted = true;
 
+// Session ID unique pour la mémoire
+let sessionId = localStorage.getItem('kevin_session_id');
+if (!sessionId) {
+    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('kevin_session_id', sessionId);
+}
+
 // --- FONCTIONS ---
 
 function goToChat() {
@@ -202,7 +209,7 @@ async function botReply(userMessage) {
         const response = await fetch('/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: userMessage })
+            body: JSON.stringify({ message: userMessage, sessionId: sessionId })
         });
 
         const data = await response.json();
@@ -276,8 +283,23 @@ function loadChat() {
 }
 
 function resetChat() {
+    // Effacer l'historique local
     localStorage.removeItem('kevin_history');
-    location.reload();
+    chatHistory.innerHTML = '';
+    userInput.value = '';
+    
+    // Effacer la mémoire côté serveur
+    fetch('/reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: sessionId })
+    });
+    
+    // Générer un nouveau sessionId pour une vraie nouvelle conversation
+    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('kevin_session_id', sessionId);
+    
+    userInput.focus();
 }
 
 // EVENTS
