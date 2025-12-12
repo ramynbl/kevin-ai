@@ -11,11 +11,12 @@ if (!process.env.GEMINI_API_KEY) {
 }
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 const conversations = new Map();
 
-console.log("Ma clé API est chargée :", process.env.GEMINI_API_KEY ? "OUI" : "NON");
+console.log("Ma clé API Gemini :", process.env.GEMINI_API_KEY ? "OUI" : "NON");
+console.log("Ma clé API ElevenLabs :", process.env.ELEVENLABS_API_KEY ? "OUI" : "NON");
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -121,6 +122,7 @@ app.post('/chat', async (req, res) => {
             Favorise les  doublessauts de ligne pour faire respirer le texte et les traits de séparation "---".
             Si on te dis "bonjour" ou "salut" ou toute autre formule de politesse, donne une réponse courte, pas besoin de grand texte. Tu détestes ça.
             Varie entre des réponses longues et des réponses courtes.
+            Lorsque l'utilisateur te demande de faire une réponse courte, fais-le sans prendre en compte les autres instructions.
 
             MÉMOIRE - HISTORIQUE DE LA CONVERSATION :
             ${history.map(m => `${m.role === 'user' ? 'Utilisateur' : 'Kevin'}: ${m.content}`).join('\n')}
@@ -145,6 +147,49 @@ app.post('/chat', async (req, res) => {
     }
 });
 
+// ELEVEN LABS - SYNTHÈSE VOCALE
+app.post('/speak', async (req, res) => {
+    try {
+        const text = req.body.text;
+        const apiKey = process.env.ELEVENLABS_API_KEY;
+        const voiceId = process.env.ELEVENLABS_VOICE_ID || 'EiNlNiXeDU1pqqOPrYMO';
+
+        if (!apiKey) {
+            return res.status(500).json({ error: "Clé API Eleven Labs non configurée." });
+        }
+
+        const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'xi-api-key': apiKey
+            },
+            body: JSON.stringify({
+                text: text,
+                model_id: "eleven_multilingual_v2",
+                voice_settings: {
+                    stability: 0.5,
+                    similarity_boost: 0.75
+                }
+            })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur ElevenLabs: ${errorText}`);
+        }
+
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        res.set('Content-Type', 'audio/mpeg');
+        res.send(buffer);
+
+    } catch (error) {
+        console.error("Erreur Voix:", error);
+        res.status(500).json({ error: "Impossible de générer la voix" });
+    }
+});
 // ✅ Endpoint pour réinitialiser la mémoire d'une session
 app.post('/reset', (req, res) => {
     const sessionId = req.body.sessionId || 'default';

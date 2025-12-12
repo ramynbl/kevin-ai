@@ -104,16 +104,54 @@ function toggleAudio() {
     }
 }
 
-// Fonction TTS (Synthèse Vocale)
-function speak(text) {
+// Fonction Speak ElevnLabs
+async function speak(text) {
     if (isMuted) return;
 
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.pitch = 0.5; 
-    utterance.rate = 1.0; 
-    utterance.lang = 'fr-FR';
-    window.speechSynthesis.speak(utterance);
+    const chatAvatarContainer = document.getElementById('chat-avatar-container');
+
+    try {
+        if (chatAvatarContainer) {
+            chatAvatarContainer.classList.remove('bg-gray-600');
+            chatAvatarContainer.classList.add('bg-white', 'animate-pulse');
+        }
+
+        const response = await fetch('/speak', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur génération audio');
+        }
+
+        const blob = await response.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        const audio = new Audio(audioUrl);
+        
+        audio.onplay = () => {
+            if (chatAvatarContainer) {
+                chatAvatarContainer.classList.remove('animate-pulse');
+                chatAvatarContainer.classList.add('siri-active', 'w-3', 'h-3');
+            }
+        };
+
+        audio.onended = () => {
+            if (chatAvatarContainer) {
+                chatAvatarContainer.classList.remove('siri-active', 'w-3', 'h-3', 'bg-white');
+                chatAvatarContainer.classList.add('bg-gray-600', 'w-1.5', 'h-1.5');
+            }
+        };
+
+        audio.play();
+    } catch (error) {
+        console.error("Erreur TTS:", error);
+        if (chatAvatarContainer) {
+            chatAvatarContainer.classList.remove('bg-white', 'animate-pulse');
+            chatAvatarContainer.classList.add('bg-gray-600');
+        }
+    }
 }
 
 // Effet machine à écrire avec Markdown visible pendant la construction
